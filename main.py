@@ -1,8 +1,9 @@
 import pygame
 import random
 
-background_image = pygame.image.load('image_with_nachos_cowboy.jpg')
-icon = pygame.image.load('icon.png')
+background_image = pygame.image.load('images/image_with_nachos_cowboy.jpg')
+icon = pygame.image.load('images/icon.png')
+
 
 class RewardsBombs():
     def __init__(self):
@@ -62,6 +63,8 @@ class RewardsBombs():
                 if pos[2]:
                     if abs(pos[0] - self.green_pos[0]) <= 20 and abs(pos[1] - self.green_pos[1]) <= 20:
                         self.score += 1
+                        pygame.mixer.music.load('win_sound.mp3')
+                        pygame.mixer.music.play(1)
                         self.red_positions.remove(pos)
                 else:
                     if (pos[0] - self.green_pos[0]) ** 2  + (pos[1] - self.green_pos[1]) ** 2 < 400:
@@ -99,7 +102,7 @@ class RewardsBombs():
         message_surface = self.font.render(f"Игра закончена! Очки: {self.score}", True, (255, 0, 0))
         self.screen.blit(message_surface, (self.screen_width // 2 - message_surface.get_width() // 2, self.screen_height // 2 - message_surface.get_height() // 2))
         pygame.display.update()
-        pygame.time.wait(1000)
+        pygame.time.wait(5000)
         pygame.quit()
         exit()
 
