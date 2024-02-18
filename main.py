@@ -104,7 +104,7 @@ class RewardsBombs():
         message_surface = self.font.render(f"Игра закончена! Очки: {self.score}", True, (255, 0, 0))
         self.screen.blit(message_surface, (self.screen_width // 2 - message_surface.get_width() // 2, self.screen_height // 2 - message_surface.get_height() // 2))
         pygame.display.update()
-        #pygame.time.wait(5000)
+        pygame.time.wait(5000)
         pygame.quit()
         exit()
 
