@@ -10,7 +10,7 @@ class RewardsBombs():
         pygame.init()
         self.screen_width = 1280
         self.screen_height = 720
-        pygame.mixer.music.load('background_music.mp3')
+        pygame.mixer.music.load('sounds/background_music.mp3')
         pygame.mixer.music.play(-1)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Стоять, ковбой!")
@@ -63,7 +63,7 @@ class RewardsBombs():
                 if pos[2]:
                     if abs(pos[0] - self.green_pos[0]) <= 20 and abs(pos[1] - self.green_pos[1]) <= 20:
                         self.score += 1
-                        pygame.mixer.music.load('win_sound.mp3')
+                        pygame.mixer.music.load('sounds/win_sound.mp3')
                         pygame.mixer.music.play(1)
                         self.red_positions.remove(pos)
                 else:
