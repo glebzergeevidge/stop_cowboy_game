@@ -1,15 +1,14 @@
 import pygame
 import random
 
-background_image = pygame.image.load('maxresdefault.jpg')
-
+background_image = pygame.image.load('image_with_nachos_cowboy.jpg')
 
 class RewardsBombs():
     def __init__(self):
         pygame.init()
         self.screen_width = 1280
         self.screen_height = 720
-        pygame.mixer.music.load('stoyat_kovbojj_-_Bez_nazvaniya_77412329.mp3')
+        pygame.mixer.music.load('stop_cowboy_meme_song.mp3')
         pygame.mixer.music.play(-1)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Стоять, ковбой!")
