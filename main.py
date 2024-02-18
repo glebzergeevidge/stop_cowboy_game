@@ -3,6 +3,7 @@ import random
 
 background_image = pygame.image.load('images/image_with_nachos_cowboy.jpg')
 icon = pygame.image.load('images/icon.png')
+apple_pie_image = pygame.image.load('images/apple_pie_image.png')
 
 
 class RewardsBombs():
@@ -84,7 +85,8 @@ class RewardsBombs():
 
             for pos in self.red_positions:
                 if pos[2]:
-                    pygame.draw.polygon(self.screen, (0, 0, 255), [[pos[0], pos[1]-10], [pos[0]+10, pos[1]+10], [pos[0]-10, pos[1]+10]])
+                    self.screen.blit(apple_pie_image, (pos[:2]))
+                    #pygame.draw.polygon(self.screen, (0, 0, 255), [[pos[0], pos[1]-10], [pos[0]+10, pos[1]+10], [pos[0]-10, pos[1]+10]])
                 else:
                     pygame.draw.circle(self.screen, (255, 0, 0), pos[:2], 10)
 
@@ -102,7 +104,7 @@ class RewardsBombs():
         message_surface = self.font.render(f"Игра закончена! Очки: {self.score}", True, (255, 0, 0))
         self.screen.blit(message_surface, (self.screen_width // 2 - message_surface.get_width() // 2, self.screen_height // 2 - message_surface.get_height() // 2))
         pygame.display.update()
-        pygame.time.wait(5000)
+        #pygame.time.wait(5000)
         pygame.quit()
         exit()
 
