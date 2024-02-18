@@ -2,16 +2,18 @@ import pygame
 import random
 
 background_image = pygame.image.load('image_with_nachos_cowboy.jpg')
+icon = pygame.image.load('icon.png')
 
 class RewardsBombs():
     def __init__(self):
         pygame.init()
         self.screen_width = 1280
         self.screen_height = 720
-        pygame.mixer.music.load('stop_cowboy_meme_song.mp3')
+        pygame.mixer.music.load('background_music.mp3')
         pygame.mixer.music.play(-1)
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Стоять, ковбой!")
+        pygame.display.set_icon(icon)
         self.clock = pygame.time.Clock()
         self.green_pos = [self.screen_width // 2, self.screen_height - 30]
         self.red_positions = []
