@@ -10,6 +10,7 @@ class RewardsBombs():
         pygame.init()
         self.screen_width = 1280
         self.screen_height = 720
+        self.sound_type = 'none'
         pygame.mixer.Channel(0).play(pygame.mixer.Sound('sounds/background_music.mp3'), -1)
         self.play_sound()
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -32,9 +33,6 @@ class RewardsBombs():
             pygame.mixer.Channel(0).pause()
             pygame.mixer.music.load('sounds/loser_sound.mp3')
             pygame.mixer.music.play(1)
-
-            
-            
 
     def run(self):
         while True:
