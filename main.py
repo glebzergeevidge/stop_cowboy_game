@@ -62,7 +62,7 @@ class RewardsBombs():
             # проверка столкновений с игроком
             for pos in self.red_positions:
                 if pos[2]:
-                    if abs(pos[0] - self.green_pos[0]) <= 20 and abs(pos[1] - self.green_pos[1]) <= 20:
+                    if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
                         self.score += 1
                         pygame.mixer.music.load('sounds/win_sound.mp3')
                         pygame.mixer.music.play(1)
