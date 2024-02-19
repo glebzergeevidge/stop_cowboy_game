@@ -4,6 +4,7 @@ import random
 background_image = pygame.image.load('images/image_with_nachos_cowboy.jpg')
 icon = pygame.image.load('images/icon.png')
 apple_pie_image = pygame.image.load('images/apple_pie_image.png')
+medal_image = pygame.image.load('images/medal.png')
 
 class RewardsBombs():
     def __init__(self):
@@ -55,28 +56,36 @@ class RewardsBombs():
                         if self.green_pos[1] + 20 <= self.screen_height:
                             self.green_pos[1] += 20
 
-            # движение красных бомб
+            # движение ботинок
             for i in range(len(self.red_positions)):
                 self.red_positions[i][1] += self.red_speed
 
             # создание бомб и призов
             if random.random() < 0.05:
                 x = random.randint(0, self.screen_width)
-                num = random.randint(1, 10)
+                num = random.randint(1, 11)
                 if num % 2 == 0:
-                    self.red_positions.append([x, 0, False])
+                    self.red_positions.append([x, 0, 'boot'])
+                elif num % 5 == 0:
+                    self.red_positions.append([x, 0, 'medal'])
                 else:
-                    self.red_positions.append([x, 0, True])
+                    self.red_positions.append([x, 0, 'pie'])
             
             # проверка столкновений с игроком
             for pos in self.red_positions:
-                if pos[2]:
+                if pos[2] == 'pie':
                     if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
                         self.score += 1
                         self.sound_type = 'win'
                         self.play_sound()
                         self.red_positions.remove(pos)
-                else:
+                elif pos[2] == 'medal':
+                    if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
+                        self.score += 10
+                        self.sound_type = 'win'
+                        self.play_sound()
+                        self.red_positions.remove(pos)
+                elif pos[2] == 'boot':
                     if (pos[0] - self.green_pos[0]) ** 2  + (pos[1] - self.green_pos[1]) ** 2 < 400:
                         self.sound_type = 'lose'
                         self.play_sound()
@@ -95,9 +104,10 @@ class RewardsBombs():
 
 
             for pos in self.red_positions:
-                if pos[2]:
+                if pos[2] == 'pie':
                     self.screen.blit(apple_pie_image, (pos[:2]))
-                    #pygame.draw.polygon(self.screen, (0, 0, 255), [[pos[0], pos[1]-10], [pos[0]+10, pos[1]+10], [pos[0]-10, pos[1]+10]])
+                elif pos[2] == 'medal':
+                    self.screen.blit(medal_image, (pos[:2]))
                 else:
                     pygame.draw.circle(self.screen, (255, 0, 0), pos[:2], 10)
 
