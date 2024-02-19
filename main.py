@@ -5,14 +5,13 @@ background_image = pygame.image.load('images/image_with_nachos_cowboy.jpg')
 icon = pygame.image.load('images/icon.png')
 apple_pie_image = pygame.image.load('images/apple_pie_image.png')
 
-
 class RewardsBombs():
     def __init__(self):
         pygame.init()
         self.screen_width = 1280
         self.screen_height = 720
-        pygame.mixer.music.load('sounds/background_music.mp3')
-        pygame.mixer.music.play(-1)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('sounds/background_music.mp3'), -1)
+        self.play_sound()
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Стоять, ковбой!")
         pygame.display.set_icon(icon)
@@ -24,6 +23,18 @@ class RewardsBombs():
         
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
+
+    def play_sound(self):
+        if self.sound_type == 'win':
+            pygame.mixer.music.load('sounds/win_sound.mp3')
+            pygame.mixer.music.play(1)
+        elif self.sound_type == 'lose':
+            pygame.mixer.Channel(0).pause()
+            pygame.mixer.music.load('sounds/loser_sound.mp3')
+            pygame.mixer.music.play(1)
+
+            
+            
 
     def run(self):
         while True:
@@ -58,17 +69,19 @@ class RewardsBombs():
                     self.red_positions.append([x, 0, False])
                 else:
                     self.red_positions.append([x, 0, True])
-
+            
             # проверка столкновений с игроком
             for pos in self.red_positions:
                 if pos[2]:
                     if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
                         self.score += 1
-                        pygame.mixer.music.load('sounds/win_sound.mp3')
-                        pygame.mixer.music.play(1)
+                        self.sound_type = 'win'
+                        self.play_sound()
                         self.red_positions.remove(pos)
                 else:
                     if (pos[0] - self.green_pos[0]) ** 2  + (pos[1] - self.green_pos[1]) ** 2 < 400:
+                        self.sound_type = 'lose'
+                        self.play_sound()
                         self.game_over()
 
             
@@ -95,6 +108,8 @@ class RewardsBombs():
             self.draw_score()
             pygame.display.update()
             self.clock.tick(60)
+
+    
 
     def draw_score(self):
         score_surface = self.font.render(f"Очки: {self.score}", True, (255, 255, 255))
