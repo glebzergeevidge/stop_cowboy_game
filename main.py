@@ -27,7 +27,7 @@ class RewardsBombs():
         self.red_speed = 3
         self.score = 0
         self.step = 20
-        self.record = open('record.txt','r').read()
+        self.record = int(open('record.txt','r').read())
         
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
@@ -99,7 +99,8 @@ class RewardsBombs():
                         self.play_sound()
                         self.game_over()
 
-            
+            if self.score > self.record:
+                self.record = self.score
 
             # убираем элементы за пределами окна
             self.red_positions = [pos for pos in self.red_positions if pos[1] < self.screen_height]
