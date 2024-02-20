@@ -25,6 +25,7 @@ class RewardsBombs():
         self.red_speed = 3
         self.score = 0
         self.step = 20
+        self.record = open('record.txt','r').read()
         
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
@@ -64,15 +65,15 @@ class RewardsBombs():
                 self.red_positions[i][1] += self.red_speed
 
             # создание бомб и призов
-            if random.random() < 0.05:
+            if random.random() < 0.1:
                 x = random.randint(0, self.screen_width)
-                num = random.randint(1, 11)
-                if num % 2 == 0:
-                    self.red_positions.append([x, 0, 'boot'])
-                elif num % 5 == 0:
+                num = random.randint(1, 21)
+                if num % 20 == 0:
                     self.red_positions.append([x, 0, 'medal'])
-                else:
+                elif num % 2 == 0:
                     self.red_positions.append([x, 0, 'pie'])
+                else:
+                    self.red_positions.append([x, 0, 'boot'])
             
             # проверка столкновений с игроком
             for pos in self.red_positions:
@@ -89,7 +90,7 @@ class RewardsBombs():
                         self.play_sound()
                         self.red_positions.remove(pos)
                 elif pos[2] == 'boot':
-                    if (pos[0] - self.green_pos[0]) ** 2  + (pos[1] - self.green_pos[1]) ** 2 < 400:
+                    if abs(pos[0] + 32 - self.green_pos[0]) <= 22 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
                         self.sound_type = 'lose'
                         self.play_sound()
                         self.game_over()
@@ -115,18 +116,28 @@ class RewardsBombs():
                     self.screen.blit(boot_image, (pos[:2]))
 
             self.screen.blit(tim_image, (self.green_pos[0] - 32, self.green_pos[1] - 32))
-
+            
             self.draw_score()
             pygame.display.update()
             self.clock.tick(60)
 
-    
+    def check_record(self):
+        self.record = open('record.txt','r').read()
+        
+        if self.score > int(self.record):
+            open('record.txt', 'w').close()
+            f2 = open('record.txt','r+')
+            f2.write(str(self.score))
+            f2.close()
 
     def draw_score(self):
         score_surface = self.font.render(f"Очки: {self.score}", True, (255, 255, 255))
-        self.screen.blit(score_surface, (10, 10))
+        record_surface = self.font.render(f"Рекорд: {self.record}", True, (255, 255, 255))
+        self.screen.blit(score_surface, (10, 60))
+        self.screen.blit(record_surface, (10, 10))
 
     def game_over(self):
+        self.check_record()
         message_surface = self.font.render(f"Игра закончена! Очки: {self.score}", True, (255, 0, 0))
         self.screen.blit(message_surface, (self.screen_width // 2 - message_surface.get_width() // 2, self.screen_height // 2 - message_surface.get_height() // 2))
         pygame.display.update()
