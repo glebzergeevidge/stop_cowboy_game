@@ -10,13 +10,13 @@ tim_image = pygame.image.load('images/tim_image.png')
 boot_image = pygame.image.load('images/cowboy_boots.png')
 
 #инициализатор
-class RewardsBombs():
+class CowboyGame():
     def __init__(self):
         pygame.init()
         self.screen_width = 1280
         self.screen_height = 720
         self.sound_type = 'none'
-        pygame.mixer.Channel(0).play(pygame.mixer.Sound('sounds/background_music.mp3'), -1)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('sounds/stop_cowboy_meme_song.mp3'), -1)
         self.play_sound()
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Стоять, ковбой!")
@@ -26,7 +26,7 @@ class RewardsBombs():
         self.red_positions = []
         self.red_speed = 3
         self.score = 0
-        self.step = 20
+        self.step = 30
         self.record = int(open('record.txt','r').read())
         
         self.font = pygame.font.SysFont("Calibri", 50)
@@ -35,11 +35,11 @@ class RewardsBombs():
     #звуковая реакция на события
     def play_sound(self):
         if self.sound_type == 'win':
-            pygame.mixer.music.load('sounds/win_sound.mp3')
+            pygame.mixer.music.load('sounds/toha_win_sound.mp3')
             pygame.mixer.music.play(1)
         elif self.sound_type == 'lose':
             pygame.mixer.Channel(0).pause()
-            pygame.mixer.music.load('sounds/loser_sound.mp3')
+            pygame.mixer.music.load('sounds/tim_loser_sound.mp3')
             pygame.mixer.music.play(1)
 
     #начало игры
@@ -51,16 +51,16 @@ class RewardsBombs():
                     exit()
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         if self.green_pos[0] - self.step >= 0:
                             self.green_pos[0] -= self.step
-                    elif event.key == pygame.K_RIGHT:
+                    elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         if self.green_pos[0] + self.step <= self.screen_width:
                             self.green_pos[0] += self.step
-                    elif event.key == pygame.K_UP:
+                    elif event.key == pygame.K_UP or event.key == pygame.K_w:
                         if self.green_pos[1] - self.step >= 0:
                             self.green_pos[1] -= self.step
-                    elif event.key == pygame.K_DOWN:
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         if self.green_pos[1] + self.step <= self.screen_height:
                             self.green_pos[1] += self.step
 
@@ -82,19 +82,19 @@ class RewardsBombs():
             # проверка столкновений с игроком
             for pos in self.red_positions:
                 if pos[2] == 'pie':
-                    if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
+                    if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1] + 16) <= 32:
                         self.score += 1
                         self.sound_type = 'win'
                         self.play_sound()
                         self.red_positions.remove(pos)
                 elif pos[2] == 'medal':
-                    if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
+                    if abs(pos[0] + 32 - self.green_pos[0]) <= 20 and abs(pos[1] + 32 - self.green_pos[1] + 20) <= 32:
                         self.score += 10
                         self.sound_type = 'win'
                         self.play_sound()
                         self.red_positions.remove(pos)
                 elif pos[2] == 'boot':
-                    if abs(pos[0] + 32 - self.green_pos[0]) <= 22 and abs(pos[1] + 32 - self.green_pos[1]) <= 32:
+                    if abs(pos[0] + 32 - self.green_pos[0]) <= 16 and abs(pos[1] + 32 - self.green_pos[1] + 16) <= 32:
                         self.sound_type = 'lose'
                         self.play_sound()
                         self.game_over()
@@ -152,4 +152,4 @@ class RewardsBombs():
         exit()
 
 if __name__ == "__main__":
-    RewardsBombs()
+    CowboyGame()
