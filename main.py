@@ -24,6 +24,7 @@ class RewardsBombs():
         self.red_positions = []
         self.red_speed = 3
         self.score = 0
+        self.step = 20
         
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
@@ -46,17 +47,17 @@ class RewardsBombs():
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        if self.green_pos[0] - 20 >= 0:
-                            self.green_pos[0] -= 20
+                        if self.green_pos[0] - self.step >= 0:
+                            self.green_pos[0] -= self.step
                     elif event.key == pygame.K_RIGHT:
-                        if self.green_pos[0] + 20 <= self.screen_width:
-                            self.green_pos[0] += 20
+                        if self.green_pos[0] + self.step <= self.screen_width:
+                            self.green_pos[0] += self.step
                     elif event.key == pygame.K_UP:
-                        if self.green_pos[1] - 20 >= 0:
-                            self.green_pos[1] -= 20
+                        if self.green_pos[1] - self.step >= 0:
+                            self.green_pos[1] -= self.step
                     elif event.key == pygame.K_DOWN:
-                        if self.green_pos[1] + 20 <= self.screen_height:
-                            self.green_pos[1] += 20
+                        if self.green_pos[1] + self.step <= self.screen_height:
+                            self.green_pos[1] += self.step
 
             # движение ботинок
             for i in range(len(self.red_positions)):
