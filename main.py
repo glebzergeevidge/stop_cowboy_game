@@ -1,6 +1,7 @@
 import pygame
 import random
 
+#изображения для игры
 background_image = pygame.image.load('images/image_with_nachos_cowboy.jpg')
 icon = pygame.image.load('images/icon.png')
 apple_pie_image = pygame.image.load('images/apple_pie_image.png')
@@ -8,6 +9,7 @@ medal_image = pygame.image.load('images/medal.png')
 tim_image = pygame.image.load('images/tim_image.png')
 boot_image = pygame.image.load('images/cowboy_boots.png')
 
+#инициализатор
 class RewardsBombs():
     def __init__(self):
         pygame.init()
@@ -30,6 +32,7 @@ class RewardsBombs():
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
 
+    #звуковая реакция на события
     def play_sound(self):
         if self.sound_type == 'win':
             pygame.mixer.music.load('sounds/win_sound.mp3')
@@ -39,6 +42,7 @@ class RewardsBombs():
             pygame.mixer.music.load('sounds/loser_sound.mp3')
             pygame.mixer.music.play(1)
 
+    #начало игры
     def run(self):
         while True:
             for event in pygame.event.get():
@@ -60,11 +64,11 @@ class RewardsBombs():
                         if self.green_pos[1] + self.step <= self.screen_height:
                             self.green_pos[1] += self.step
 
-            # движение ботинок
+            # движение элементов
             for i in range(len(self.red_positions)):
                 self.red_positions[i][1] += self.red_speed
 
-            # создание бомб и призов
+            # создание элементов
             if random.random() < 0.1:
                 x = random.randint(0, self.screen_width)
                 num = random.randint(1, 21)
@@ -97,16 +101,13 @@ class RewardsBombs():
 
             
 
-            # убираем бомбы за пределами окна
+            # убираем элементы за пределами окна
             self.red_positions = [pos for pos in self.red_positions if pos[1] < self.screen_height]
 
             #выводим фон
             self.screen.blit(background_image,(0, 0))
 
-            #жесткая ковбойская музыка
-            
-
-
+            #отрисовка элементов
             for pos in self.red_positions:
                 if pos[2] == 'pie':
                     self.screen.blit(apple_pie_image, (pos[:2]))
@@ -115,27 +116,31 @@ class RewardsBombs():
                 else:
                     self.screen.blit(boot_image, (pos[:2]))
 
+            #отрисовка персонажа
             self.screen.blit(tim_image, (self.green_pos[0] - 32, self.green_pos[1] - 32))
             
+            #обновление экрана
             self.draw_score()
             pygame.display.update()
             self.clock.tick(60)
 
+    #проверка рекорда
     def check_record(self):
         self.record = open('record.txt','r').read()
-        
         if self.score > int(self.record):
             open('record.txt', 'w').close()
             f2 = open('record.txt','r+')
             f2.write(str(self.score))
             f2.close()
 
+    #отрисовка очков и рекорда
     def draw_score(self):
         score_surface = self.font.render(f"Очки: {self.score}", True, (255, 255, 255))
         record_surface = self.font.render(f"Рекорд: {self.record}", True, (255, 255, 255))
         self.screen.blit(score_surface, (10, 60))
         self.screen.blit(record_surface, (10, 10))
 
+    #проигрыш
     def game_over(self):
         self.check_record()
         message_surface = self.font.render(f"Игра закончена! Очки: {self.score}", True, (255, 0, 0))
