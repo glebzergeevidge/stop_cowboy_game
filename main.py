@@ -5,6 +5,8 @@ background_image = pygame.image.load('images/image_with_nachos_cowboy.jpg')
 icon = pygame.image.load('images/icon.png')
 apple_pie_image = pygame.image.load('images/apple_pie_image.png')
 medal_image = pygame.image.load('images/medal.png')
+tim_image = pygame.image.load('images/tim_image.png')
+boot_image = pygame.image.load('images/cowboy_boots.png')
 
 class RewardsBombs():
     def __init__(self):
@@ -109,9 +111,9 @@ class RewardsBombs():
                 elif pos[2] == 'medal':
                     self.screen.blit(medal_image, (pos[:2]))
                 else:
-                    pygame.draw.circle(self.screen, (255, 0, 0), pos[:2], 10)
+                    self.screen.blit(boot_image, (pos[:2]))
 
-            pygame.draw.circle(self.screen, (0, 255, 0), self.green_pos, 10)
+            self.screen.blit(tim_image, (self.green_pos[0] - 32, self.green_pos[1] - 32))
 
             self.draw_score()
             pygame.display.update()
