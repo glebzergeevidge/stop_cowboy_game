@@ -9,8 +9,8 @@ medal_image = pygame.image.load('images/medal.png')
 tim_image = pygame.image.load('images/tim_image.png')
 boot_image = pygame.image.load('images/cowboy_boots.png')
 
-#инициализатор
-class CowboyGame():
+# инициализатор
+class CowboyGame:
     def __init__(self):
         pygame.init()
         self.screen_width = 1280
@@ -32,7 +32,7 @@ class CowboyGame():
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
 
-    #звуковая реакция на события
+    # звуковая реакция на события
     def play_sound(self):
         if self.sound_type == 'win':
             pygame.mixer.music.load('sounds/toha_win_sound.mp3')
@@ -42,7 +42,7 @@ class CowboyGame():
             pygame.mixer.music.load('sounds/tim_loser_sound.mp3')
             pygame.mixer.music.play(1)
 
-    #начало игры
+    # начало игры
     def run(self):
         while True:
             for event in pygame.event.get():
@@ -99,16 +99,17 @@ class CowboyGame():
                         self.play_sound()
                         self.game_over()
 
+            # обновление рекорда на экране во время игры
             if self.score > self.record:
                 self.record = self.score
 
             # убираем элементы за пределами окна
             self.red_positions = [pos for pos in self.red_positions if pos[1] < self.screen_height]
 
-            #выводим фон
+            # вывод фона
             self.screen.blit(background_image,(0, 0))
 
-            #отрисовка элементов
+            # отрисовка элементов
             for pos in self.red_positions:
                 if pos[2] == 'pie':
                     self.screen.blit(apple_pie_image, (pos[:2]))
@@ -117,15 +118,15 @@ class CowboyGame():
                 else:
                     self.screen.blit(boot_image, (pos[:2]))
 
-            #отрисовка персонажа
+            # отрисовка персонажа
             self.screen.blit(tim_image, (self.green_pos[0] - 32, self.green_pos[1] - 32))
             
-            #обновление экрана
+            # обновление экрана
             self.draw_score()
             pygame.display.update()
             self.clock.tick(60)
 
-    #проверка рекорда
+    # проверка рекорда
     def check_record(self):
         self.record = open('record.txt','r').read()
         if self.score > int(self.record):
@@ -134,14 +135,14 @@ class CowboyGame():
             f2.write(str(self.score))
             f2.close()
 
-    #отрисовка очков и рекорда
+    # отрисовка очков и рекорда
     def draw_score(self):
         score_surface = self.font.render(f"Очки: {self.score}", True, (255, 255, 255))
         record_surface = self.font.render(f"Рекорд: {self.record}", True, (255, 255, 255))
         self.screen.blit(score_surface, (10, 60))
         self.screen.blit(record_surface, (10, 10))
 
-    #проигрыш
+    # проигрыш
     def game_over(self):
         self.check_record()
         message_surface = self.font.render(f"Игра закончена! Очки: {self.score}", True, (255, 0, 0))
