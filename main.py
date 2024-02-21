@@ -27,7 +27,7 @@ class CowboyGame:
         self.red_speed = 3
         self.score = 0
         self.step = 30
-        self.record = int(open('record.txt','r').read())
+        self.record = int(open('texts/record.txt','r').read())
         
         self.font = pygame.font.SysFont("Calibri", 50)
         self.run()
@@ -128,10 +128,10 @@ class CowboyGame:
 
     # проверка рекорда
     def check_record(self):
-        self.record = open('record.txt','r').read()
+        self.record = open('texts/record.txt','r').read()
         if self.score > int(self.record):
-            open('record.txt', 'w').close()
-            f2 = open('record.txt','r+')
+            open('texts/record.txt', 'w').close()
+            f2 = open('texts/record.txt','r+')
             f2.write(str(self.score))
             f2.close()
 
