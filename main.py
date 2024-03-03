@@ -22,9 +22,9 @@ class CowboyGame:
         pygame.display.set_caption("Стоять, ковбой!")
         pygame.display.set_icon(icon)
         self.clock = pygame.time.Clock()
-        self.green_pos = [self.screen_width // 2, self.screen_height - 30]
-        self.red_positions = []
-        self.red_speed = 3
+        self.good_positions = [self.screen_width // 2, self.screen_height - 30]
+        self.bad_positions = []
+        self.bad_speed = 3
         self.score = 0
         self.step = 30
         self.record = int(open('texts/record.txt','r').read())
@@ -52,49 +52,49 @@ class CowboyGame:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                        if self.green_pos[0] - self.step >= 0:
-                            self.green_pos[0] -= self.step
+                        if self.good_positions[0] - self.step >= 0:
+                            self.good_positions[0] -= self.step
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                        if self.green_pos[0] + self.step <= self.screen_width:
-                            self.green_pos[0] += self.step
+                        if self.good_positions[0] + self.step <= self.screen_width:
+                            self.good_positions[0] += self.step
                     elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                        if self.green_pos[1] - self.step >= 0:
-                            self.green_pos[1] -= self.step
+                        if self.good_positions[1] - self.step >= 0:
+                            self.good_positions[1] -= self.step
                     elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                        if self.green_pos[1] + self.step <= self.screen_height:
-                            self.green_pos[1] += self.step
+                        if self.good_positions[1] + self.step <= self.screen_height:
+                            self.good_positions[1] += self.step
 
             # движение элементов
-            for i in range(len(self.red_positions)):
-                self.red_positions[i][1] += self.red_speed
+            for i in range(len(self.bad_positions)):
+                self.bad_positions[i][1] += self.bad_speed
 
             # создание элементов
             if random.random() < 0.1:
                 x = random.randint(0, self.screen_width)
                 num = random.randint(1, 21)
                 if num % 20 == 0:
-                    self.red_positions.append([x, 0, 'medal'])
+                    self.bad_positions.append([x, 0, 'medal'])
                 elif num % 2 == 0:
-                    self.red_positions.append([x, 0, 'pie'])
+                    self.bad_positions.append([x, 0, 'pie'])
                 else:
-                    self.red_positions.append([x, 0, 'boot'])
+                    self.bad_positions.append([x, 0, 'boot'])
             
             # проверка столкновений с игроком
-            for pos in self.red_positions:
+            for pos in self.bad_positions:
                 if pos[2] == 'pie':
-                    if abs(pos[0] + 32 - self.green_pos[0]) <= 32 and abs(pos[1] + 32 - self.green_pos[1] + 16) <= 32:
+                    if abs(pos[0] + 32 - self.good_positions[0]) <= 32 and abs(pos[1] + 32 - self.good_positions[1] + 16) <= 32:
                         self.score += 1
                         self.sound_type = 'win'
                         self.play_sound()
-                        self.red_positions.remove(pos)
+                        self.bad_positions.remove(pos)
                 elif pos[2] == 'medal':
-                    if abs(pos[0] + 32 - self.green_pos[0]) <= 20 and abs(pos[1] + 32 - self.green_pos[1] + 20) <= 32:
+                    if abs(pos[0] + 32 - self.good_positions[0]) <= 20 and abs(pos[1] + 32 - self.good_positions[1] + 20) <= 32:
                         self.score += 10
                         self.sound_type = 'win'
                         self.play_sound()
-                        self.red_positions.remove(pos)
+                        self.bad_positions.remove(pos)
                 elif pos[2] == 'boot':
-                    if abs(pos[0] + 32 - self.green_pos[0]) <= 16 and abs(pos[1] + 32 - self.green_pos[1] + 16) <= 32:
+                    if abs(pos[0] + 32 - self.good_positions[0]) <= 16 and abs(pos[1] + 32 - self.good_positions[1] + 16) <= 32:
                         self.sound_type = 'lose'
                         self.play_sound()
                         self.game_over()
@@ -104,13 +104,13 @@ class CowboyGame:
                 self.record = self.score
 
             # убираем элементы за пределами окна
-            self.red_positions = [pos for pos in self.red_positions if pos[1] < self.screen_height]
+            self.bad_positions = [pos for pos in self.bad_positions if pos[1] < self.screen_height]
 
             # вывод фона
             self.screen.blit(background_image,(0, 0))
 
             # отрисовка элементов
-            for pos in self.red_positions:
+            for pos in self.bad_positions:
                 if pos[2] == 'pie':
                     self.screen.blit(apple_pie_image, (pos[:2]))
                 elif pos[2] == 'medal':
@@ -119,7 +119,7 @@ class CowboyGame:
                     self.screen.blit(boot_image, (pos[:2]))
 
             # отрисовка персонажа
-            self.screen.blit(tim_image, (self.green_pos[0] - 32, self.green_pos[1] - 32))
+            self.screen.blit(tim_image, (self.good_positions[0] - 32, self.good_positions[1] - 32))
             
             # обновление экрана
             self.draw_score()
